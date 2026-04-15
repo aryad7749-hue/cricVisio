@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>T20 World Cup 2026 Squads - CricVision</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='homebg.jpeg') }}");
+             background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+           
+            min-height: 100vh;
+            text-align: center;
+           
+            
+        }
+
+        h1 {
+            color: #004080;
+            margin-bottom: 35px;
+        }
+
+        .teams-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .team-card {
+            background-color: #ffffff;
+            color: #004080;
+            border: 2px solid #004080;
+            border-radius: 12px;
+            padding: 18px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            text-decoration: none;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            background-color: #004080;
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .no-teams {
+            font-size: 18px;
+            color: #004080;
+        }
+
+        .back-home {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #004080;
+            border: 2px solid #004080;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-home:hover {
+            background-color: #004080;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<h1>IPL 2026 TEAMS</h1>
+
+<div class="teams-container">
+    {% if teams %}
+        {% for team in teams %}
+            <a href="/team/{{ team }}" class="team-card">
+                {{ team }}
+            </a>
+        {% endfor %}
+    {% else %}
+        <div class="no-teams">
+            No teams available.
+        </div>
+    {% endif %}
+</div>
+
+<a href="/" class="back-home">← Back to Home</a>
+
+</body>
+</html>

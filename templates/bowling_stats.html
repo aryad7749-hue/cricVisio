@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bowling Stats</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #020617;
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        /* TITLE */
+        h1 {
+            text-align: center;
+            margin: 30px 0 10px;
+            font-size: 36px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        /* GRID */
+        .container {
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        /* CARD */
+        .card {
+            width: 300px;
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s ease;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            background: #3b82f6;
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0px 10px 25px rgba(59,130,246,0.7);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #cbd5f5;
+            margin-top: 5px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    🏏 Cricket Analytics Dashboard
+</div>
+
+<h1>Bowling Statistics</h1>
+<p class="subtitle">Explore top bowling performances</p>
+
+<div class="container">
+
+    <a href="/most_wickets" class="card">
+        <div class="icon">🎯</div>
+        <div class="title">Most Wickets</div>
+        <div class="desc">Top wicket takers</div>
+    </a>
+
+</div>
+
+</body>
+</html>

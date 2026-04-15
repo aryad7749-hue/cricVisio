@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Comparison Result - CricVision</title>
+    <style>
+        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; padding: 40px; }
+        .comparison-wrapper { display: flex; justify-content: center; align-items: flex-start; gap: 30px; margin-top: 30px; }
+        .player-card { background: #1e293b; padding: 25px; border-radius: 15px; width: 350px; border: 2px solid #3b82f6; text-align: center; }
+        .vs-circle { background: #3b82f6; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-top: 100px; }
+        .stat-line { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .ai-winner-box { background: #fbbf24; color: #000; padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 20px; max-width: 500px; margin: 0 auto 30px auto; }
+    </style>
+</head>
+<body>
+    <div class="ai-winner-box">🏆 AI ANALYSIS: {{ winner }} is performing better currently!</div>
+
+    <div class="comparison-wrapper">
+        <div class="player-card">
+            <h2>{{ p1.name }}</h2>
+            <p style="color: #93c5fd;">{{ p1.role }} | {{ p1.team }}</p>
+            <div class="stat-line"><span>Matches</span> <span>{{ s1.matches }}</span></div>
+            <div class="stat-line"><span>Runs</span> <span>{{ s1.runs }}</span></div>
+            <div class="stat-line"><span>Wickets</span> <span>{{ s1.wickets }}</span></div>
+            <div class="stat-line" style="color: #fbbf24; font-weight: bold;"><span>AI Prediction</span> <span>{{ pr1 }}</span></div>
+        </div>
+
+        <div class="vs-circle">VS</div>
+
+        <div class="player-card">
+            <h2>{{ p2.name }}</h2>
+            <p style="color: #93c5fd;">{{ p2.role }} | {{ p2.team }}</p>
+            <div class="stat-line"><span>Matches</span> <span>{{ s2.matches }}</span></div>
+            <div class="stat-line"><span>Runs</span> <span>{{ s2.runs }}</span></div>
+            <div class="stat-line"><span>Wickets</span> <span>{{ s2.wickets }}</span></div>
+            <div class="stat-line" style="color: #fbbf24; font-weight: bold;"><span>AI Prediction</span> <span>{{ pr2 }}</span></div>
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="/compare" style="color: #3b82f6; text-decoration: none;">← Back to Selection</a>
+    </div>
+</body>
+</html>

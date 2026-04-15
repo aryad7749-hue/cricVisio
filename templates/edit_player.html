@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Player - CricVision</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: #e6f0ff; 
+            padding: 40px; 
+        }
+        .edit-box { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 15px; 
+            width: 500px; 
+            margin: auto; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); 
+        }
+        h2 { color: #004080; text-align: center; margin-top: 0; }
+        label { 
+            display: block; 
+            margin-top: 15px; 
+            font-weight: bold; 
+            color: #004080; 
+        }
+        input, select { 
+            width: 100%; 
+            padding: 10px; 
+            margin-top: 5px; 
+            border-radius: 8px; 
+            border: 1px solid #ccc; 
+            box-sizing: border-box; 
+        }
+        .field-group { 
+            background: #f0f7ff; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-top: 15px; 
+            border-left: 5px solid #004080; 
+        }
+        .btn-update { 
+            background: #004080; 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            width: 100%; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            margin-top: 20px; 
+        }
+        .btn-update:hover { background-color: #00264d; }
+        .btn-back { 
+            display: block; 
+            text-align: center; 
+            margin-top: 15px; 
+            color: #004080; 
+            text-decoration: none; 
+            font-weight: bold; 
+        }
+    </style>
+</head>
+<body>
+
+<div class="edit-box">
+    <h2>Edit Player Details</h2>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ player.name }}" required>
+
+        <label>Role:</label>
+        <select name="role" id="role_select" onchange="toggleEditFields()">
+            <option value="Batter" {% if player.role == 'Batter' %}selected{% endif %}>Batter</option>
+            <option value="Bowler" {% if player.role == 'Bowler' %}selected{% endif %}>Bowler</option>
+            <option value="All Rounder" {% if player.role == 'All Rounder' %}selected{% endif %}>All Rounder</option>
+        </select>
+
+        <label>Team:</label>
+        <select name="team">
+            {% for team in teams %}
+            <option value="{{ team }}" {% if player.team == team %}selected{% endif %}>{{ team }}</option>
+            {% endfor %}
+        </select>
+
+        <div id="batting-stats-notice" class="field-group">
+            <p style="margin:0; font-weight:bold; color:#004080;">Batting Profile Active</p>
+            <small>This player profile is configured to display Batting Statistics and Graphs.</small>
+        </div>
+
+        <div id="bowling-stats-notice" class="field-group">
+            <p style="margin:0; font-weight:bold; color:#004080;">Bowling Profile Active</p>
+            <small>This player profile is configured to display Bowling and Wicket Statistics.</small>
+        </div>
+
+        <button type="submit" class="btn-update">Update Player</button>
+    </form>
+    <a href="/admin" class="btn-back">← Back to Admin</a>
+</div>
+
+<script>
+    function toggleEditFields() {
+        const role = document.getElementById('role_select').value;
+        const battingNotice = document.getElementById('batting-stats-notice');
+        const bowlingNotice = document.getElementById('bowling-stats-notice');
+
+        if (role === "Batter") {
+            battingNotice.style.display = 'block';
+            bowlingNotice.style.display = 'none';
+        } else if (role === "Bowler") {
+            battingNotice.style.display = 'none';
+            bowlingNotice.style.display = 'block';
+        } else {
+            // All Rounder shows both profile notices
+            battingNotice.style.display = 'block';
+            bowlingNotice.style.display = 'block';
+        }
+    }
+
+    // Run this logic immediately when the page finishes loading
+    window.onload = toggleEditFields;
+</script>
+
+</body>
+</html>
+

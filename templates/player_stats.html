@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ player.name }} - CricVision</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e3a8a);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(0,0,0,0.85);
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        .main {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px 20px;
+        }
+
+        .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile h1 { font-size: 38px; margin-bottom: 5px; }
+        .role { color: #93c5fd; font-size: 18px; font-weight: bold; }
+
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 20px; 
+        }
+
+        .card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            box-shadow: 0px 5px 15px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .chart-section {
+            background: rgba(255,255,255,0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        /* Milestone Tracker Specific Style */
+        .milestone-box {
+            border-left: 5px solid #fbbf24;
+            text-align: left;
+            background: rgba(251, 191, 36, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .chart-section img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 2px solid #3b82f6;
+        }
+
+        .label { font-size: 13px; color: #bfdbfe; text-transform: uppercase; letter-spacing: 1px; }
+        .value { font-size: 28px; font-weight: bold; margin-top: 8px; color: #fff; }
+
+        table { width: 100%; color: white; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid #3b82f6; color: #93c5fd; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        
+        .back {
+            display: block;
+            text-align: center;
+            margin: 30px auto;
+            text-decoration: none;
+            color: white;
+            font-size: 18px;
+            padding: 10px 25px;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            width: fit-content;
+            transition: 0.3s;
+        }
+        .back:hover { background: #3b82f6; }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    🏏 Cricket Analytics Dashboard
+</div>
+
+<div class="main">
+    <div class="profile">
+        <h1>{{ player.name }}</h1>
+        <div class="role" id="display_role">{{ player.role }} | {{ player.team }}</div>
+        <input type="hidden" id="player_role" value="{{ player.role }}">
+    </div>
+
+    <div class="stats-grid">
+        <div class="card">
+            <div class="label">Matches</div>
+            <div class="value">{{ stats.matches }}</div>
+        </div>
+
+        <div class="card batting-stat">
+            <div class="label">Runs</div>
+            <div class="value">{{ stats.runs }}</div>
+        </div>
+        <div class="card batting-stat">
+            <div class="label">Batting Avg</div>
+            <div class="value">{{ stats.average }}</div>
+        </div>
+        <div class="card batting-stat">
+            <div class="label">Strike Rate</div>
+            <div class="value">{{ stats.strike_rate }}</div>
+        </div>
+
+        <div class="card bowling-stat">
+            <div class="label">Wickets</div>
+            <div class="value">{{ stats.wickets }}</div>
+        </div>
+        <div class="card bowling-stat">
+            <div class="label">Economy</div>
+            <div class="value">{{ stats.economy }}</div>
+        </div>
+
+        <div class="card" style="border: 1px solid #fbbf24; background: rgba(251, 191, 36, 0.1);">
+            <div class="label" style="color: #fbbf24;">AI Predicted Form</div>
+            <div class="value" style="color: #fbbf24;">{{ prediction }}</div>
+            <div style="font-size: 10px; color: #bfdbfe; margin-top: 5px;">Based on recent match trends</div>
+        </div>
+    </div>
+
+    {% if milestones %}
+    <div class="milestone-box">
+        <h3 style="color: #fbbf24; margin-top: 0; display: flex; align-items: center;">
+            <span style="margin-right: 10px;">🚀</span> AI Milestone Tracker
+        </h3>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+            {% for m in milestones %}
+            <li style="padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-size: 16px; color: #fff;">
+                {{ m }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="chart-section">
+        <h3 style="margin-top: 0; color: #93c5fd;">Performance Trend</h3>
+        {% if plot_url %}
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Player Performance Graph">
+        {% else %}
+            <p style="padding: 20px; color: #bfdbfe;">No trend data available. Add match performances to see the graph.</p>
+        {% endif %}
+    </div>
+
+    <div class="chart-section">
+        <h3 style="color: #93c5fd; margin-top: 0;">Match History</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Opponent</th>
+                    <th class="batting-stat">Runs</th>
+                    <th class="batting-stat">Balls</th>
+                    <th class="bowling-stat">Wickets</th>
+                    <th class="bowling-stat">Overs</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in performances %}
+                <tr>
+                    <td>{{ p.opponent }}</td>
+                    <td class="batting-stat">{{ p.runs }}</td>
+                    <td class="batting-stat">{{ p.balls }}</td>
+                    <td class="bowling-stat">{{ p.wickets }}</td>
+                    <td class="bowling-stat">{{ p.overs }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/squad" class="back">⬅ Back to Squad</a>
+</div>
+
+<script>
+    function applyRoleFilter() {
+        const roleInput = document.getElementById('player_role').value.toLowerCase();
+        const battingElements = document.querySelectorAll('.batting-stat');
+        const bowlingElements = document.querySelectorAll('.bowling-stat');
+
+        // Reset visibility
+        battingElements.forEach(el => el.style.display = '');
+        bowlingElements.forEach(el => el.style.display = '');
+
+        if (roleInput.includes("batter")) {
+            bowlingElements.forEach(el => el.style.display = 'none');
+        } else if (roleInput.includes("bowler")) {
+            battingElements.forEach(el => el.style.display = 'none');
+        } 
+        // All Rounders leave both visible
+    }
+
+    window.onload = applyRoleFilter;
+</script>
+
+</body>
+</html>

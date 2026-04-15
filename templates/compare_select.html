@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Comparison - CricVision</title>
+    <style>
+        body { background: #0f172a; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; }
+        .container { background: rgba(30, 41, 59, 0.8); padding: 40px; border-radius: 20px; display: inline-block; border: 1px solid #3b82f6; }
+        select { padding: 12px; margin: 15px; width: 300px; border-radius: 8px; background: #1e293b; color: white; border: 1px solid #3b82f6; }
+        button { background: #3b82f6; color: white; padding: 12px 30px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        button:disabled { background: #475569; cursor: not-allowed; }
+        .step-label { color: #93c5fd; font-weight: bold; text-transform: uppercase; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>⚔️ Player Comparison</h1>
+    <div class="container">
+        <form method="POST">
+            <div>
+                <span class="step-label">Step 1: Select Primary Player</span><br>
+                <select name="player1" id="p1" onchange="filterRoles()" required>
+                    <option value="" disabled selected>Choose Player...</option>
+                    {% for p in players %}
+                    <option value="{{p.id}}" data-role="{{p.role}}">{{p.name}} ({{p.role}})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <span class="step-label">Step 2: Compare With (Same Role Only)</span><br>
+                <select name="player2" id="p2" onchange="enableButton()" required disabled>
+                    <option value="" disabled selected>Select Player 1 First</option>
+                    {% for p in players %}
+                    <option value="{{p.id}}" data-role="{{p.role}}" class="p2-opt">{{p.name}} ({{p.team}})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" id="compareBtn" disabled>Run AI Comparison</button>
+        </form>
+    </div>
+
+    <script>
+        function filterRoles() {
+            const p1 = document.getElementById('p1');
+            const p2 = document.getElementById('p2');
+            const selectedRole = p1.options[p1.selectedIndex].getAttribute('data-role');
+            const p1Id = p1.value;
+
+            p2.disabled = false;
+            p2.value = "";
+            document.getElementById('compareBtn').disabled = true;
+
+            const options = document.querySelectorAll('.p2-opt');
+            options.forEach(opt => {
+                // Show only if role matches AND it's not the same player
+                if (opt.getAttribute('data-role') === selectedRole && opt.value !== p1Id) {
+                    opt.style.display = 'block';
+                } else {
+                    opt.style.display = 'none';
+                }
+            });
+        }
+
+        function enableButton() {
+            document.getElementById('compareBtn').disabled = false;
+        }
+    </script>
+</body>
+</html>

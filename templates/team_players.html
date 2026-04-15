@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ team_name }} Squad - CricVision</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{{ url_for('static', filename='homebg.jpeg') }}");
+             background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+           
+            min-height: 100vh;
+            
+            text-align: center;
+            
+        }
+
+        h1 {
+            color: #004080;
+            margin-bottom: 30px;
+        }
+
+        .players-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .player-card {
+            background-color: #ffffff;
+            border: 2px solid #004080;
+            border-radius: 12px;
+            padding: 18px;
+            width: 220px;
+            text-align: center;
+            font-weight: bold;
+            color: #004080;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .player-card:hover {
+            background-color: #004080;
+            color: #ffffff;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .player-role {
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: normal;
+        }
+
+        .no-players {
+            color: #004080;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 35px;
+            padding: 10px 20px;
+            background-color: #ffffff;
+            color: #004080;
+            border: 2px solid #004080;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background-color: #004080;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+<h1>{{ team_name }} Squad</h1>
+
+<div class="players-container">
+    {% if players %}
+        {% for player in players %}
+            <a href="/player/{{ player.id }}" class="player-card">
+                {{ player.name }}
+                <div class="player-role">
+                    {{ player.role }}
+                </div>
+            </a>
+        {% endfor %}
+    {% else %}
+        <div class="no-players">
+            No players added yet for {{ team_name }}.
+        </div>
+    {% endif %}
+</div>
+
+<a href="/squad" class="back-link">← Back to All Teams</a>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cricket Stats</title>
+</head>
+<body>
+
+<h1>🏏 Top Players Stats</h1>
+
+<h2>🔥 Most Runs</h2>
+<ol>
+{% for p in most_runs %}
+    <li>{{ p['name'] }} - {{ p['total_runs'] }}</li>
+{% endfor %}
+</ol>
+
+<h2>📊 Best Average</h2>
+<ol>
+{% for p in best_avg %}
+    <li>{{ p['name'] }} - {{ p['avg']|round(2) }}</li>
+{% endfor %}
+</ol>
+
+<h2>⚡ Best Strike Rate</h2>
+<ol>
+{% for p in best_sr %}
+    <li>{{ p['name'] }} - {{ p['sr']|round(2) }}</li>
+{% endfor %}
+</ol>
+
+<!-- MOST FOURS -->
+<div class="card">
+    <h2>🟦 Most Fours</h2>
+    {% for p in most_fours %}
+        <div class="player-btn">
+            {{ p['name'] }} - {{ p['total_fours'] }}
+        </div>
+    {% endfor %}
+</div>
+
+<!-- MOST SIXES -->
+<div class="card">
+    <h2>🟪 Most Sixes</h2>
+    {% for p in most_sixes %}
+        <div class="player-btn">
+            {{ p['name'] }} - {{ p['total_sixes'] }}
+        </div>
+    {% endfor %}
+</div>
+
+<h2>🎯 Most Wickets</h2>
+<ol>
+{% for p in most_wickets %}
+    <li>{{ p['name'] }} - {{ p['total_wickets'] }}</li>
+{% endfor %}
+</ol>
+
+</body>
+</html>

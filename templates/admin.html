@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel - CricVision</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 20px;
+            background-color: #e6f0ff;
+        }
+
+        /* --- Header & Logout Section --- */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #004080;
+            padding-bottom: 10px;
+        }
+
+        h1 {
+            color: #004080;
+            margin: 0;
+        }
+
+        .btn-logout {
+            background-color: #d32f2f;
+            color: white;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #b71c1c;
+            text-decoration: none;
+        }
+
+        /* --- UI Components --- */
+        h2 {
+            color: #004080;
+            margin-top: 40px;
+            border-bottom: 2px solid #004080;
+            padding-bottom: 5px;
+            width: fit-content;
+        }
+
+        form {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .field-group {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 5px solid #004080;
+        }
+
+        .btn-submit {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #00264d;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin: 10px 0;
+            background: #ffffff;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #004080;
+            color: white;
+        }
+
+        .actions a {
+            margin-left: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .delete { color: #d32f2f; }
+        .edit { color: #004080; }
+        .edit-match { color: #2563eb; }
+
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1>Admin Panel - CricVision</h1>
+        <a href="/logout" class="btn-logout">Logout</a>
+    </div>
+
+    <form action="/add_player" method="post">
+        <h2>Add New Player</h2>
+        <label>Name:</label>
+        <input type="text" name="name" required placeholder="Enter player name">
+
+        <label>Role:</label>
+        <select name="role">
+            <option value="Batter">Batter</option>
+            <option value="Bowler">Bowler</option>
+            <option value="All Rounder">All Rounder</option>
+        </select>
+
+        <label>Team:</label>
+        <select name="team">
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-submit">Add Player</button>
+    </form>
+
+    <hr>
+
+    <h2>Enter Match Performance</h2>
+    <form action="/add_performance" method="post">
+        <label>Select Player:</label>
+        <select name="player_id" id="player_select" required onchange="updateFields()">
+            <option value="" disabled selected>-- Select a Player --</option>
+            {% for player in players %}
+                <option value="{{ player.id }}" data-role="{{ player.role }}">{{ player.name }} - {{ player.team }} ({{ player.role }})</option>
+            {% endfor %}
+        </select>
+
+        <label>Opponent Team:</label>
+        <select name="opponent" required>
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+        </select>
+
+        <div id="batting-fields" class="field-group">
+            <h3 style="margin-top:0; font-size:16px;">Batting Stats</h3>
+            <label>Runs Scored:</label>
+            <input type="number" name="runs" value="0" min="0">
+            <label>Balls Faced:</label>
+            <input type="number" name="balls" value="0" min="0">
+            <label>Fours:</label>
+            <input type="number" name="fours" value="0" min="0">
+            <label>Sixes:</label>
+            <input type="number" name="sixes" value="0" min="0">
+        </div>
+
+        <div id="bowling-fields" class="field-group">
+            <h3 style="margin-top:0; font-size:16px;">Bowling Stats</h3>
+            <label>Wickets Taken:</label>
+            <input type="number" name="wickets" value="0" min="0">
+            <label>Runs Conceded:</label>
+            <input type="number" name="runs_conceded" value="0" min="0">
+            <label>Overs Bowled (e.g. 4.0):</label>
+            <input type="number" step="0.1" name="overs" id="overs_input" value="0.0" min="0" oninput="validateOvers(this)">
+            <small id="over_hint" style="color: #666; font-size: 11px;">Max .5 balls per over (e.g., 0.5 then 1.0)</small>
+        </div>
+
+        <button type="submit" class="btn-submit">Add Performance</button>
+    </form>
+
+    <hr>
+
+    <h2>Match History (Edit Stats)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Player</th>
+                <th>Opponent</th>
+                <th>Runs</th>
+                <th>Wickets</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in all_performances %}
+            <tr>
+                <td><strong>{{ p.player_name }}</strong></td>
+                <td>{{ p.opponent }}</td>
+                <td>{{ p.runs }}</td>
+                <td>{{ p.wickets }}</td>
+                <td>
+                    <a href="/edit_performance/{{ p.id }}" class="edit-match">Edit Match Data</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Current Players</h2>
+    <ul>
+        {% for player in players %}
+            <li>
+                <div>
+                    <strong>{{ player.name }}</strong> - {{ player.team }} <br>
+                    <small style="color: #666;">Role: {{ player.role }}</small>
+                </div>
+                <div class="actions">
+                    <a href="/edit_player/{{ player.id }}" class="edit">Edit Player Info</a>
+                    <a href="/delete_player/{{ player.id }}" class="delete" onclick="return confirm('Delete this player?')">Delete</a>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <script>
+        function validateOvers(input) {
+            const val = input.value.toString();
+            if (val.includes('.')) {
+                const parts = val.split('.');
+                const balls = parseInt(parts[1]);
+                if (balls >= 6) {
+                    const correctedOvers = Math.floor(parseFloat(val)) + 1 + (balls - 6) / 10;
+                    input.value = correctedOvers.toFixed(1);
+                }
+            }
+        }
+
+        function updateFields() {
+            const playerSelect = document.getElementById('player_select');
+            const battingFields = document.getElementById('batting-fields');
+            const bowlingFields = document.getElementById('bowling-fields');
+            
+            if (!playerSelect.value) {
+                battingFields.style.display = 'none';
+                bowlingFields.style.display = 'none';
+                return;
+            }
+
+            const selectedOption = playerSelect.options[playerSelect.selectedIndex];
+            const role = selectedOption.getAttribute('data-role');
+
+            if (role === "Batter") {
+                battingFields.style.display = 'block';
+                bowlingFields.style.display = 'none';
+            } else if (role === "Bowler") {
+                battingFields.style.display = 'none';
+                bowlingFields.style.display = 'block';
+            } else {
+                battingFields.style.display = 'block';
+                bowlingFields.style.display = 'block';
+            }
+        }
+
+        window.onload = updateFields;
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Best Strike Rate</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #38bdf8, #1e3a8a);
+            color: white;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-bottom: 2px solid #7dd3fc;
+        }
+
+        /* TITLE */
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 42px;
+            text-shadow: 0px 0px 20px rgba(255,255,255,0.7);
+        }
+
+        /* CONTAINER */
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+        }
+
+        /* CARD */
+        .card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            margin: 15px 0;
+            padding: 20px 25px;
+            border-radius: 15px;
+            backdrop-filter: blur(12px);
+            transition: 0.3s;
+            box-shadow: 0px 6px 18px rgba(0,0,0,0.5);
+        }
+
+        .card:hover {
+            transform: scale(1.04);
+            background: rgba(125, 211, 252, 0.7);
+            box-shadow: 0px 12px 30px rgba(56,189,248,0.9);
+        }
+
+        /* TOP 3 */
+        .top1 {
+            border: 2px solid gold;
+            background: linear-gradient(90deg, rgba(255,215,0,0.3), rgba(255,255,255,0.1));
+        }
+
+        .top2 {
+            border: 2px solid silver;
+        }
+
+        .top3 {
+            border: 2px solid #cd7f32;
+        }
+
+        /* RANK */
+        .rank {
+            font-size: 24px;
+            font-weight: bold;
+            width: 60px;
+        }
+
+        /* PLAYER */
+        .name {
+            font-size: 20px;
+            flex: 1;
+            text-align: left;
+        }
+
+        /* SR */
+        .sr {
+            font-size: 22px;
+            font-weight: bold;
+            color: #e0f2fe;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    🏏 Cricket Analytics Dashboard
+</div>
+
+<h1>⚡ Best Strike Rate Leaderboard</h1>
+
+<div class="container">
+
+{% for p in data %}
+    <div class="card 
+        {% if loop.index == 1 %}top1
+        {% elif loop.index == 2 %}top2
+        {% elif loop.index == 3 %}top3
+        {% endif %}">
+        
+        <div class="rank">#{{ loop.index }}</div>
+        <div class="name">{{ p['name'] }}</div>
+        <div class="sr">{{ p['sr']|round(2) }}</div>
+
+    </div>
+{% endfor %}
+
+</div>
+
+</body>
+</html>
